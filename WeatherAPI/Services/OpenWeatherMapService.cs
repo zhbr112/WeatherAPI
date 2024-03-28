@@ -5,7 +5,6 @@ namespace WeatherAPI.Services;
 public class OpenWeatherMapService(ILogger<OpenWeatherMapService> logger, IConfiguration config, IHttpClientFactory httpClientFactory) : IWeatherService
 {
     private readonly ILogger _logger = logger;
-    private readonly IConfiguration _config = config;
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient("owm");
     private readonly string apiKey = config.GetValue<string>("OpenWeatherMap:Token")!;
 

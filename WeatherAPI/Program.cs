@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using WeatherAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,8 +14,8 @@ builder.Services.AddHttpClient("owm", (c) =>
     c.BaseAddress = new Uri("https://api.openweathermap.org/data/2.5/");
 });
 
-builder.Services.AddTransient<IWeatherService, OpenWeatherMapService>();
-builder.Services.AddTransient<WeatherDescriptorService>();
+builder.Services.AddScoped<IWeatherService, OpenWeatherMapService>();
+builder.Services.AddSingleton<WeatherDescriptorService>();
 
 var app = builder.Build();
 

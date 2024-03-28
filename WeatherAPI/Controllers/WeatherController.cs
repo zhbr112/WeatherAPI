@@ -13,15 +13,15 @@ namespace WeatherAPI.Controllers
 
         [HttpGet]
         [Route("{city}")]
-        public async Task<string?> GetStatusAsync(string city)
+        public async Task<ActionResult<string>> GetStatusAsync(string city)
         {
             var weather = await _weatherService.GetWeatherAsync(city);
 
-            if (weather is null) return "Сервер не ответил";
+            if (weather is null) return StatusCode(500);
 
             var description = _descriptorService.Describe(weather);
 
-            return description;
+            return Content(description);
         }
     }
 }

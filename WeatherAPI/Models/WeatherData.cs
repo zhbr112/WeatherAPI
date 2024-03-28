@@ -5,22 +5,17 @@ namespace WeatherAPI.Models;
 public class WeatherData
 {
     // Краткое описание погоды
-    [Required]
-    public string? Description { get; set; }
+    public required string? Description { get; set; }
 
     // Температура в Кельвинах
-    [Required]
-    public float? TemperatureK { get; set; }
+    public required float? TemperatureK { get; set; }
 
     // Температура в Цельсиях
-    [Required]
     public float? TemperatureC => TemperatureK - 273.15f;
 
     // Процент влажности
-    [Required]
-    public float? Humidity { get; set; }
+    public required float? Humidity { get; set; }
 
     // Вероятность осадков
-    [Required]
-    public float? Precipitation { get; set; }
+    public required float? Precipitation { get; set; }
 }
