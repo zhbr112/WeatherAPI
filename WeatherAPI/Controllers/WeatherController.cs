@@ -1,26 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using WeatherAPI.Models;
+using WeatherAPI.Services;
 
 namespace WeatherAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherController : ControllerBase
-    {       
-        private readonly ILogger<WeatherController> _logger;
-
-        public WeatherController(ILogger<WeatherController> logger)
-        {
-            _logger = logger;
-        }
+    public class WeatherController(ILogger<WeatherController> logger, IWeatherService weatherService) : ControllerBase
+    {
+        private readonly ILogger<WeatherController> _logger = logger;
+        private readonly IWeatherService _weatherService = weatherService;
 
         [HttpGet]
-        [Route("{sity}")]
-        public string Get1(string sity)
+        [Route("{city}")]
+        public async Task<string?> GetStatusAsync(string city)
         {
-            var res = (new GetRequest(sity)).response().Result; 
-            return res.weather[0].main;
+            var res = await _weatherService.GetWeatherDescriptionAsync(city);
+            return res;
         }
     }
 }
