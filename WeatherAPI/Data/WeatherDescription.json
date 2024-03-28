@@ -1,0 +1,8 @@
+{
+  "WeatherDescription": {
+    "Warm": "It's warm outside",
+    "Cold": "It's cold outside",
+    "Normal": "It's normal outside"
+
+  }
+}

@@ -2,12 +2,12 @@
 
 namespace WeatherAPI.Services;
 
-public class OpenWeatherMapService(ILogger<OpenWeatherMapService> logger, IHttpClientFactory httpClientFactory) : IWeatherService
+public class OpenWeatherMapService(ILogger<OpenWeatherMapService> logger, IHttpClientFactory httpClientFactory, IConfiguration config) : IWeatherService
 {
     private readonly ILogger _logger = logger;
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient("owm");
     private readonly string apiKey = Environment.GetEnvironmentVariable("OpenWeatherMapApiKey", EnvironmentVariableTarget.Machine)!;
-
+    private readonly IConfiguration _config = config;
 
 
     private async Task<OpenWeatherMapResponse?> GetWeatherDataAsync(string city)
@@ -26,11 +26,10 @@ public class OpenWeatherMapService(ILogger<OpenWeatherMapService> logger, IHttpC
         var weather = new WeatherData()
         {
             Description = response?.weather?[0].main,
-            TemperatureC = response?.main?.temp,
+            TemperatureC = response?.main?.temp - 273.15f,
             Humidity = response?.main?.humidity,
             Precipitation = response?.rain?._1h
         };
-
         return weather;
     }
 
@@ -38,7 +37,13 @@ public class OpenWeatherMapService(ILogger<OpenWeatherMapService> logger, IHttpC
     {
         var weather = await GetWeatherAsync(city);
 
-        return weather?.Description;
-    }
+        string? description = weather?.TemperatureC switch
+        {
+            > 20 => _config.GetValue<string>("WeatherDescription:Warm"),
+            < 0 => _config.GetValue<string>("WeatherDescription:Cold"),
+            _ => _config.GetValue<string>("WeatherDescription:Normal")
+        };
 
+        return description;
+    }
 }
