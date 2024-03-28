@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using WeatherAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);

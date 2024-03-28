@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Net.Http;
-using WeatherAPI.Models;
+﻿using WeatherAPI.Models;
 
 namespace WeatherAPI.Services;
 
